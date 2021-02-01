@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 
 	parser.set_required<std::string>("u", "url","URL for Philip Light Status API server");
 	parser.set_optional<int>("p", "poll", 10, "polling timee period");
-	parser.set_optional<int>("w", "poll", 10, "response wait time out");
+	parser.set_optional<int>("w", "wait", 10, "response wait time out");
 
 	parser.run_and_exit_if_error();
 

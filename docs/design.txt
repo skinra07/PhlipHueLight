@@ -1,0 +1,48 @@
+Design:
+   When application start it will query hue-simulator and cache the initial
+state of light statuses. The instance of PollingProcess object will call
+"/api/newdeveloper" to query the statuses in every polling period. It will
+compare the result with cache and if there are differences it will update the cache
+with latest statuses and display latest statuses in the console.
+
+Build:
+1) The application is build using Microsoft Visual Code 2017, Community version.
+2) It uses the following third party libraries:
+   - nlohmann.json ( installed via Nuget Package Manager )
+   - cpp-httplib ( copy header file )
+   - CmdParser ( copy header file )
+
+Run:
+1) debug folder contains executable file
+2) Command to run:
+   PhlipHueLight.exe -u URL -p 10 -w 10
+
+   Available parameters:
+
+  -h    --help
+
+   This parameter is optional. The default value is ''.
+
+  -u    --url   (required)
+   URL for Philip Light Status API server
+
+  -p    --poll
+   polling timee period
+   This parameter is optional. The default value is '10'.
+
+  -w    --wait
+   response wait time out
+   This parameter is optional. The default value is '10'.
+
+Testing:
+The application uses hue-simulator for testing.
+
+1) Start hue-simulator : hue-simulator --port=8081
+2) Run  PhlipHueLight.exe -u URL. Where URL is the IP address where
+hue-simulator is running.
+3) It is /api/newdeveloper API to get initial light statuses.
+4) Using hue-simulator I changed the state of existing light state and
+application will display any update statuses
+
+NOTE: I couldn't find the way to add new light using hue-simulator.
+
