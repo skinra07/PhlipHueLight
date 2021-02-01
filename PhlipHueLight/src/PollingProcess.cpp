@@ -3,6 +3,7 @@
 #include <string>
 #include <future>
 #include <chrono>
+#include <exception>
 
 PollingProcess::PollingProcess(std::string url, int polling, int wait) : 
 	running(true), url(url), polling_time(polling), wait_time(wait)
@@ -13,7 +14,16 @@ PollingProcess::PollingProcess(std::string url, int polling, int wait) :
 
 std::string PollingProcess::retrieveLightStatus()
 {
-	return light_status->getStatus(this->url);
+	try
+	{
+		return light_status->getStatus(this->url);
+	}
+	catch (std::exception& ex)
+	{
+		std::cout << "Exception: " << ex.what() << std::endl;
+	}
+
+	return std::string{};
 }
 
 void PollingProcess::doPolling()
@@ -36,8 +46,11 @@ void PollingProcess::doPolling()
 		if (status == std::future_status::ready)
 		{
 			auto lightStatus = futureData.get();
-			
-			process_status->doProcess(lightStatus);
+
+			if (!lightStatus.empty())
+			{
+				process_status->doProcess(lightStatus);
+			}
 		}
 		else
 		{
